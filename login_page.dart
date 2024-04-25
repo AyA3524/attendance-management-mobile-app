@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'PortalEmployee.dart'; 
 
 class LoginPage extends StatefulWidget {
   @override
@@ -12,61 +10,17 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController passwordController = TextEditingController();
   bool isPasswordVisible = false;
   bool showIdErrorMessage = false;
-  bool showPasswordErrorMessage = false; 
-  bool showErrorMessage = false;
-  String? employeeDocId; // To store the document ID of the employee
+  bool showPasswordErrorMessage = false;
 
-  Future<void> signIn() async {
+  void signIn() {
     int? employeeId = int.tryParse(employeeidController.text);
-    if (employeeId != null) {
-      CollectionReference employees =
-          FirebaseFirestore.instance.collection('employees');
-      final querySnapshot =
-          await employees.where('id', isEqualTo: employeeId).get();
-      if (querySnapshot.docs.isEmpty) {
-        setState(() {
-          showErrorMessage = true;
-        });
-      } else {
-        setState(() {
-          showErrorMessage = false;
-          employeeDocId = querySnapshot.docs.first.id; // Save document ID
-        });
-
-        final employeeData = querySnapshot.docs.first.data();
-        final storedPassword = (employeeData as Map<String, dynamic>)['password'];
-
-        final enteredPassword = int.tryParse(passwordController.text);
-
-        if (storedPassword != null && storedPassword == enteredPassword) {
-          // Password correct, navigate to PortalEmployy.dart
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => PortalEmployeePage()),
-          );
-          return;
-        } else {
-          // Password incorrect
-          setState(() {
-            showPasswordErrorMessage = true;
-          });
-          return;
-        }
-      }
-    }
+    bool isValidId = employeeId != null && employeeidController.text.isNotEmpty;
+    bool isValidPassword =
+        passwordController.text.isNotEmpty && int.tryParse(passwordController.text) != null;
 
     setState(() {
-      if (employeeidController.text.isEmpty) {
-        showIdErrorMessage = true;
-      } else {
-        showIdErrorMessage = false;
-      }
-
-      if (passwordController.text.isEmpty) {
-        showPasswordErrorMessage = true;
-      } else {
-        showPasswordErrorMessage = false;
-      }
+      showIdErrorMessage = !isValidId;
+      showPasswordErrorMessage = !isValidPassword;
     });
   }
 
@@ -79,8 +33,7 @@ class _LoginPageState extends State<LoginPage> {
           end: Alignment.bottomLeft,
           colors: [
             Colors.blue,
-         
-           Color.fromARGB(255, 240, 231, 231),
+            Color.fromARGB(255, 240, 231, 231),
           ],
         ),
       ),
@@ -98,19 +51,14 @@ class _LoginPageState extends State<LoginPage> {
                   _inputField("Employee ID", employeeidController),
                   if (showIdErrorMessage)
                     const Text(
-                      'Please insert your ID.',
+                      'Please insert your ID as number.',
                       style: TextStyle(color: Colors.red),
                     ),
                   const SizedBox(height: 20),
-                  if (showErrorMessage)
-                    const Text(
-                      'ID does not exist, try again!',
-                      style: TextStyle(color: Colors.red),
-                    ),
                   _inputField("Password", passwordController, isPassword: true),
-                  if (showPasswordErrorMessage && !showErrorMessage) // Only show if ID exists
+                  if (showPasswordErrorMessage)
                     const Text(
-                      'Password is not correct, retry!',
+                      'Please insert your password as number.',
                       style: TextStyle(color: Colors.red),
                     ),
                   const SizedBox(height: 50),
@@ -165,9 +113,7 @@ class _LoginPageState extends State<LoginPage> {
                   });
                 },
                 icon: Icon(
-                  isPasswordVisible
-                      ? Icons.visibility
-                      : Icons.visibility_off,
+                  isPasswordVisible ? Icons.visibility : Icons.visibility_off,
                   color: Colors.white,
                 ),
               )
@@ -178,7 +124,6 @@ class _LoginPageState extends State<LoginPage> {
         setState(() {
           showIdErrorMessage = false;
           showPasswordErrorMessage = false;
-          showErrorMessage = false;
         });
       },
     );
