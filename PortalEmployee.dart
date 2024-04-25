@@ -1,24 +1,16 @@
-import 'package:attendance_management_app/Profile.dart';
 import 'package:flutter/material.dart';
-//import 'profile.dart'; // Assuming profile.dart contains the ProfilePage widget
-
+import 'SalarySlipsPage.dart';
+import 'HolidayCalendarPage.dart';
+import 'OvertimeAttendancePage.dart';
+import 'LateAttendancePage.dart';
+import 'AttendanceDetailsPage.dart';
+import 'AttendancePage.dart';
+import 'ProfilePage.dart';
 class PortalEmployeePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            'Attendance Management App ',
-            style: TextStyle(
-              color: const Color.fromARGB(255, 46, 140, 217),
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          backgroundColor: Color.fromRGBO(255, 255, 255, 0.905),
-          centerTitle: true,
-        ),
         body: Stack(
           children: [
             Container(
@@ -73,9 +65,10 @@ class PortalEmployeePage extends StatelessWidget {
                             child: IconButton(
                               icon: Icon(Icons.person, color: Colors.blue),
                               onPressed: () {
+                                // Navigate to ProfilePage
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) => ProfilePage()), // Navigate to ProfilePage
+                                  MaterialPageRoute(builder: (context) => ProfilePage()),
                                 );
                               },
                             ),
@@ -89,27 +82,57 @@ class PortalEmployeePage extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            _buildIconButton(Icons.fingerprint, 'Mark Attendance'),
+                            _buildIconButton(
+                              context,
+                              Icons.fingerprint,
+                              'Mark Attendance',
+                              AttendancePage(),
+                            ),
                             SizedBox(width: 20),
-                            _buildIconButton(Icons.list, 'Attendance Details'),
+                            _buildIconButton(
+                              context,
+                              Icons.list,
+                              'Attendance Details',
+                              AttendanceDetailsPage(),
+                            ),
                           ],
                         ),
                         SizedBox(height: 20),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            _buildIconButton(Icons.watch_later_outlined, 'Late Attendance'),
+                            _buildIconButton(
+                              context,
+                              Icons.watch_later_outlined,
+                              'Late Attendance',
+                              LateAttendancePage(),
+                            ),
                             SizedBox(width: 20),
-                            _buildIconButton(Icons.watch_later_outlined, 'Overtime Attendance'),
+                            _buildIconButton(
+                              context,
+                              Icons.watch_later_outlined,
+                              'Overtime Attendance',
+                              OvertimeAttendancePage(),
+                            ),
                           ],
                         ),
                         SizedBox(height: 20),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            _buildIconButton(Icons.calendar_today, 'Public Holiday Calendar'),
+                            _buildIconButton(
+                              context,
+                              Icons.calendar_today,
+                              'Public Holiday Calendar',
+                              HolidayCalendarPage(),
+                            ),
                             SizedBox(width: 20),
-                            _buildIconButton(Icons.attach_money, 'Salary Slips'),
+                            _buildIconButton(
+                              context,
+                              Icons.attach_money,
+                              'Salary Slips',
+                              SalarySlipsPage(),
+                            ),
                           ],
                         ),
                       ],
@@ -124,12 +147,18 @@ class PortalEmployeePage extends StatelessWidget {
     );
   }
 
-  Widget _buildIconButton(IconData icon, String label) {
+  Widget _buildIconButton(BuildContext context, IconData icon, String label, Widget page) {
     return SizedBox(
       width: 250,
       height: 80,
       child: ElevatedButton.icon(
-        onPressed: () {},
+        onPressed: () {
+          // Navigate to respective page
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => page),
+          );
+        },
         icon: Icon(icon, size: 32),
         label: Flexible(
           child: Text(
@@ -151,3 +180,18 @@ class PortalEmployeePage extends StatelessWidget {
     );
   }
 }
+
+// Define other pages here
+
+
+
+
+
+
+
+
+
+
+
+
+
