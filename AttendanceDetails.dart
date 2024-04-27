@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class AttendanceDetailsPage extends StatelessWidget {
   @override
+  //
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
