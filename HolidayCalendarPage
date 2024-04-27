@@ -1,0 +1,96 @@
+import 'package:flutter/material.dart';
+import 'package:table_calendar/table_calendar.dart';
+
+class HolidayCalendarPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topRight,
+                end: Alignment.bottomLeft,
+                colors: [
+                  const Color.fromARGB(255, 83, 171, 243),
+                  Color.fromARGB(255, 240, 231, 231),
+                ],
+              ),
+            ),
+          ),
+          Center(
+            child: Container(
+              width: 600,
+              height: 450,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 5,
+                    blurRadius: 7,
+                    offset: Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: _buildCalendar(),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCalendar() {
+    // Special dates
+    DateTime newYear = DateTime(DateTime.now().year, 1, 1);
+    DateTime yenayer = DateTime(DateTime.now().year, 1, 12);
+    DateTime employeeDay = DateTime(DateTime.now().year, 5, 1);
+    DateTime independence = DateTime(DateTime.now().year, 7, 5);
+    DateTime revolution = DateTime(DateTime.now().year, 11, 1);
+
+    return TableCalendar(
+      firstDay: DateTime(DateTime.now().year, 1, 1),
+      lastDay: DateTime(DateTime.now().year, 12, 31),
+      focusedDay: DateTime.now(),
+      calendarFormat: CalendarFormat.month,
+      headerStyle: HeaderStyle(
+        formatButtonVisible: false,
+        titleCentered: true,
+      ),
+      calendarStyle: CalendarStyle(
+        defaultTextStyle: TextStyle(color: const Color.fromARGB(255, 12, 10, 10)),
+        // Add decoration if needed
+      ),
+      
+      selectedDayPredicate: (day) {
+        // Customize which dates to mark as selected
+        return isSameDay(day, newYear) || isSameDay(day, yenayer) || isSameDay(day, employeeDay) || isSameDay(day, independence) || isSameDay(day, revolution);
+      },
+      // Add event handling callbacks if needed
+    );
+  }
+}
+
+void main() {
+  runApp(MaterialApp(
+    home: Scaffold(
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topRight,
+            end: Alignment.bottomLeft,
+            colors: [
+              const Color.fromARGB(255, 83, 171, 243),
+              Color.fromARGB(255, 240, 231, 231),
+            ],
+          ),
+        ),
+        child: HolidayCalendarPage(),
+      ),
+    ),
+    debugShowCheckedModeBanner: false, // Remove the debug banner
+  ));
+}
