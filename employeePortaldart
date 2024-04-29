@@ -52,8 +52,8 @@ class EmployeePortalPage extends StatelessWidget {
                     height: 60,
                     color: Colors.transparent,
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween, 
-                      children: [ 
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
                         Padding(
                           padding: EdgeInsets.only(left: 20),
                           child: Text(
@@ -82,9 +82,6 @@ class EmployeePortalPage extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 20),
-                  // Display employee ID
-               //   _buildProfileInfo(context, 'Employee ID', employeeId.toString()),
-                  SizedBox(height: 20),
                   Column(
                     children: [
                       Row(
@@ -112,7 +109,7 @@ class EmployeePortalPage extends StatelessWidget {
                           _buildIconButton(
                             context,
                             Icons.watch_later_outlined,
-                            'Go Out time ',
+                            'My Late Attendance',
                             LateAttendancePage(),
                           ),
                           SizedBox(width: 20),
@@ -137,8 +134,8 @@ class EmployeePortalPage extends StatelessWidget {
                           SizedBox(width: 20),
                           _buildIconButton(
                             context,
-                            Icons.attach_money,
-                            'Salary Slips',
+                            Icons.shopping_bag_outlined,
+                            'End Of Time',
                             SalarySlipsPage(),
                           ),
                         ],
@@ -158,7 +155,7 @@ class EmployeePortalPage extends StatelessWidget {
     return SizedBox(
       width: 250,
       height: 80,
-      child: ElevatedButton.icon(
+      child: ElevatedButton(
         onPressed: () {
           // Navigate to respective page
           Navigator.push(
@@ -166,49 +163,25 @@ class EmployeePortalPage extends StatelessWidget {
             MaterialPageRoute(builder: (context) => page),
           );
         },
-        icon: Icon(icon, size: 32),
-        label: Flexible(
-          child: Text(
-            label,
-            style: TextStyle(fontSize: 18),
-            textAlign: TextAlign.center,
-          ),
-        ),
         style: ElevatedButton.styleFrom(
-          foregroundColor: Colors.white,
-          backgroundColor: Colors.blue,
-          shape: RoundedRectangleBorder(
+          foregroundColor: Colors.white, backgroundColor: Colors.blue, shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8.0),
           ),
           shadowColor: Colors.grey,
           elevation: 5,
         ),
-      ),
-    );
-   
-  }
-
-  Widget _buildProfileInfo(BuildContext context, String label, String value) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Text(
-            '$label:',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, size: 32),
+            SizedBox(height: 5), // Ajouter un espacement entre l'icône et le texte
+            Text(
+              label,
+              style: TextStyle(fontSize: 18),
+              textAlign: TextAlign.center,
             ),
-          ),
-          SizedBox(width: 10),
-          Text(
-            value,
-            style: TextStyle(
-              fontSize: 16,
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
