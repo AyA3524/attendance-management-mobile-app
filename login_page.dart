@@ -1,5 +1,8 @@
+import 'package:ama/employeePortal.dart';
 import 'package:flutter/material.dart';
-
+import 'dart:convert';
+import 'employeePortal.dart';
+import 'package:http/http.dart' as http;
 class LoginPage extends StatefulWidget {
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -11,18 +14,84 @@ class _LoginPageState extends State<LoginPage> {
   bool isPasswordVisible = false;
   bool showIdErrorMessage = false;
   bool showPasswordErrorMessage = false;
+void signIn() async {
+  int? employeeId = int.tryParse(employeeidController.text);
+  bool isValidId = employeeId != null && employeeidController.text.isNotEmpty;
+  bool isValidPassword =
+      passwordController.text.isNotEmpty && int.tryParse(passwordController.text) != null;
 
-  void signIn() {
-    int? employeeId = int.tryParse(employeeidController.text);
-    bool isValidId = employeeId != null && employeeidController.text.isNotEmpty;
-    bool isValidPassword =
-        passwordController.text.isNotEmpty && int.tryParse(passwordController.text) != null;
+  if (isValidId && isValidPassword) {
+    final response = await http.post(
+      Uri.parse('http://localhost:3000/login'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, dynamic>{
+        'id': employeeId,
+        'password': int.parse(passwordController.text),
+      }),
+    );
 
+    if (response.statusCode == 200) {
+      // User authenticated successfully
+     // Navigator.pushNamed(context, 'Aya');
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => EmployeePortalPage(employeeId: employeeId)),
+      );
+  
+    } 
+    else if (response.statusCode == 401) {
+      // Authentication failed
+      showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: Text('Authentication Error'),
+          content: Text('Password is incorrect.'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('OK'),
+            ),
+          ],
+        ),
+      );
+    } else {
+      // Other errors
+      showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: Text('Error'),
+          content: Text('An error occurred during authentication.'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('OK'),
+            ),
+          ],
+        ),
+      );
+    }
+  } else {
     setState(() {
       showIdErrorMessage = !isValidId;
       showPasswordErrorMessage = !isValidPassword;
     });
   }
+  
+}
+
+  //void signIn() {
+    //int? employeeId = int.tryParse(employeeidController.text);
+    //bool isValidId = employeeId != null && employeeidController.text.isNotEmpty;
+    //bool isValidPassword =
+      //  passwordController.text.isNotEmpty && int.tryParse(passwordController.text) != null;
+
+    //setState(() {
+     // showIdErrorMessage = !isValidId;
+      //showPasswordErrorMessage = !isValidPassword;
+    //});
+  //}
 
   @override
   Widget build(BuildContext context) {
