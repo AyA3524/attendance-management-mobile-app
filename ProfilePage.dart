@@ -1,10 +1,57 @@
 import 'package:flutter/material.dart';
 import 'login.dart';
-class ProfilePage extends StatelessWidget {
-  // Variables for profile information
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+
+class ProfilePage extends StatefulWidget {
+  final int employeeId;
+
+  ProfilePage({required this.employeeId});
+
+  @override
+  _ProfilePageState createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
   String name = '';
   String function = '';
-  int? id=1; // Initially set to null
+
+  @override
+  void initState() {
+    super.initState();
+    fetchEmployeeDetails();
+  }
+
+  void fetchEmployeeDetails() async {
+  try {
+    final response = await http.get(Uri.parse('http://localhost:3000/employees'));
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      final List<dynamic> employees = data['data'];
+      
+      // Find the employee with the provided employeeId
+      final employee = employees.firstWhere((emp) => emp['EmployeeID'] == widget.employeeId, orElse: () => null);
+
+      if (employee != null) {
+        setState(() {
+          name = employee['Name'];
+          function = employee['Functio'];
+        });
+      } else {
+        // Handle case when employee is not found
+        print('Employee not found');
+      }
+    } else {
+      // Handle error
+      print('Error: ${response.statusCode}');
+    }
+  } catch (e) {
+    // Handle exception
+    print('Exception: $e');
+  }
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -58,11 +105,11 @@ class ProfilePage extends StatelessWidget {
                   SizedBox(height: 20),
                   _buildProfileInfo(context, 'Name', name),
                   _buildProfileInfo(context, 'Function', function),
-                  _buildProfileInfo(context, 'ID', id != null ? id.toString() : ''),
+                  _buildProfileInfo(context, 'Employee ID', widget.employeeId.toString()),
                   SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () {
-                          Navigator.pushReplacement(
+                      Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(builder: (context) => LoginPage()),
                       );
