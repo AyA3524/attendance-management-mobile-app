@@ -6,143 +6,150 @@ import 'LateAttendancePage.dart';
 import 'AttendanceDetailsPage.dart';
 import 'AttendancePage.dart';
 import 'ProfilePage.dart';
-class PortalEmployeePage extends StatelessWidget {
+import 'login.dart';
+
+class EmployeePortalPage extends StatelessWidget {
+  final int employeeId;
+
+  EmployeePortalPage({required this.employeeId});
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        body: Stack(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topRight,
-                  end: Alignment.bottomLeft,
-                  colors: [
-                    const Color.fromARGB(255, 83, 171, 243),
-                    Color.fromARGB(255, 240, 231, 231),
-                  ],
-                ),
+    return Scaffold(
+      body: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topRight,
+                end: Alignment.bottomLeft,
+                colors: [
+                  const Color.fromARGB(255, 83, 171, 243),
+                  Color.fromARGB(255, 240, 231, 231),
+                ],
               ),
             ),
-            Center(
-              child: Container(
-                width: 600,
-                height: 450,
-                decoration: BoxDecoration(
-                  color: Color.fromRGBO(255, 255, 255, 0.905),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      spreadRadius: 5,
-                      blurRadius: 7,
-                      offset: Offset(0, 3),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      height: 60,
-                      color: Colors.transparent,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(left: 20),
-                            child: Text(
-                              'Employee Portal',
-                              style: TextStyle(
-                                color: const Color.fromARGB(255, 46, 140, 217),
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                              ),
+          ),
+          Center(
+            child: Container(
+              width: 600,
+              height: 450,
+              decoration: BoxDecoration(
+                color: Color.fromRGBO(255, 255, 255, 0.905),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 5,
+                    blurRadius: 7,
+                    offset: Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    height: 60,
+                    color: Colors.transparent,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween, 
+                      children: [ 
+                        Padding(
+                          padding: EdgeInsets.only(left: 20),
+                          child: Text(
+                            'Employee Portal',
+                            style: TextStyle(
+                              color: const Color.fromARGB(255, 46, 140, 217),
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
-                          Padding(
-                            padding: EdgeInsets.only(right: 20),
-                            child: IconButton(
-                              icon: Icon(Icons.person, color: Colors.blue),
-                              onPressed: () {
-                                // Navigate to ProfilePage
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => ProfilePage()),
-                                );
-                              },
-                            ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(right: 20),
+                          child: IconButton(
+                            icon: Icon(Icons.person, color: Colors.blue),
+                            onPressed: () {
+                              // Navigate to ProfilePage
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => ProfilePage(employeeId: employeeId)),
+                              );
+                            },
                           ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            _buildIconButton(
-                              context,
-                              Icons.fingerprint,
-                              'Mark Attendance',
-                              AttendancePage(),
-                            ),
-                            SizedBox(width: 20),
-                            _buildIconButton(
-                              context,
-                              Icons.list,
-                              'Attendance Details',
-                              AttendanceDetailsPage(),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 20),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            _buildIconButton(
-                              context,
-                              Icons.watch_later_outlined,
-                              'Late Attendance',
-                              LateAttendancePage(),
-                            ),
-                            SizedBox(width: 20),
-                            _buildIconButton(
-                              context,
-                              Icons.watch_later_outlined,
-                              'Overtime Attendance',
-                              OvertimeAttendancePage(),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 20),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            _buildIconButton(
-                              context,
-                              Icons.calendar_today,
-                              'Public Holiday Calendar',
-                              HolidayCalendarPage(),
-                            ),
-                            SizedBox(width: 20),
-                            _buildIconButton(
-                              context,
-                              Icons.attach_money,
-                              'Salary Slips',
-                              SalarySlipsPage(),
-                            ),
-                          ],
                         ),
                       ],
                     ),
-                  ],
-                ),
+                  ),
+                  SizedBox(height: 20),
+                  // Display employee ID
+               //   _buildProfileInfo(context, 'Employee ID', employeeId.toString()),
+                  SizedBox(height: 20),
+                  Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          _buildIconButton(
+                            context,
+                            Icons.fingerprint,
+                            'Mark Attendance',
+                            AttendancePage(),
+                          ),
+                          SizedBox(width: 20),
+                          _buildIconButton(
+                            context,
+                            Icons.list,
+                            'Attendance Details',
+                            AttendanceDetailsPage(),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          _buildIconButton(
+                            context,
+                            Icons.watch_later_outlined,
+                            'Go Out time ',
+                            LateAttendancePage(),
+                          ),
+                          SizedBox(width: 20),
+                          _buildIconButton(
+                            context,
+                            Icons.watch_later_outlined,
+                            'Overtime Attendance',
+                            OvertimeAttendancePage(),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          _buildIconButton(
+                            context,
+                            Icons.calendar_today,
+                            'Public Holiday Calendar',
+                            HolidayCalendarPage(),
+                          ),
+                          SizedBox(width: 20),
+                          _buildIconButton(
+                            context,
+                            Icons.attach_money,
+                            'Salary Slips',
+                            SalarySlipsPage(),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -178,20 +185,31 @@ class PortalEmployeePage extends StatelessWidget {
         ),
       ),
     );
+   
+  }
+
+  Widget _buildProfileInfo(BuildContext context, String label, String value) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Text(
+            '$label:',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          SizedBox(width: 10),
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: 16,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
-
-// Define other pages here
-
-
-
-
-
-
-
-
-
-
-
-
-
